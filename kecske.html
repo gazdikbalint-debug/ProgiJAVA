@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<title>Tanár Úr Fan Club</title>
+<style>
+*{box-sizing: border-box;}
+body{
+  margin:0;
+  min-height:100vh;
+  overflow:hidden;
+  font-family: Arial, sans-serif;
+  color:white;
+  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url("goat.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+h1{
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 20px;
+  text-shadow: 2px 2px 4px black;
+  font-size: 35px;
+}
+
+.fejlec{
+  text-align:center;
+  z-index:10;
+  position:relative;
+}
+
+#torlesgomb{
+  padding: 10px 20px;
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#kecske_btn{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  border: 3px solid white;
+  background: orange;
+  cursor: pointer;
+  z-index: 3;
+  padding: 0;
+  overflow: hidden;
+  box-shadow: 0 0 20px black;
+}
+
+#kecske_btn img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#kecske_btn:hover{
+  transform: translate(-50%, -50%) scale(1.08);
+}
+
+.statisztika{
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  padding: 10px 15px;
+  background: rgba(0,0,0,0.8);
+  border: 2px solid red;
+  border-radius: 8px;
+  z-index: 10;
+}
+
+#szam{
+  font-size: 25px;
+  color: red;
+  font-weight: bold;
+}
+
+.zene_doboz{
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  width: 280px;
+  border-radius: 10px;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.bejovo_kep{
+  position: absolute;
+  width: 200px;
+  padding: 5px;
+  background: white;
+  color: black;
+  border-radius: 5px;
+  box-shadow: 0 5px 15px black;
+  z-index: 5;
+  cursor: pointer;
+}
+
+.bejovo_kep img{
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+}
+
+.szovegke{
+  text-align: center;
+  font-weight: bold;
+  padding: 5px;
+}
+
+.also_szoveg{
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px black;
+  z-index: 10;
+}
+</style>
+</head>
+<body>
+
+<h1>Tanár Úrnak Speciálisan!</h1>
+
+<div class="fejlec">
+  <button id="torlesgomb">Mindent töröl</button>
+</div>
+
+<div class="statisztika">
+  Kattintások:<br>
+  <span id="szam">0</span>
+</div>
+
+<button id="kecske_btn">
+  <img src="goat.jpg" alt="Gomb">
+</button>
+
+<div class="zene_doboz">
+  <iframe src="https://open.spotify.com/embed/playlist/6Lgg0qnj1r8j4aQIpPKFLf?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+</div>
+
+<div class="also_szoveg">Kattints a fejre amilyen gyorsan csak tudsz!</div>
+
+<script>
+let x = 0;
+const gomb = document.getElementById("kecske_btn");
+const kiir = document.getElementById("szam");
+const torolGomb = document.getElementById("torlesgomb");
+
+const szovegek = [
+  "Főnök jelen!",
+  "Azért laza a pacek!",
+  "Zseni!",
+  "Szigor van!",
+  "A legenda!",
+  "Ugyan már!",
+  "Osztály kedvence!"
+];
+
+const kepekListaja = [
+  "tanarur1.jpg",
+  "tanarur2.jpg",
+  "tanarur3.jpg",
+  "tanarur4.jpg",
+  "tanarur5.jpg"
+];
+
+gomb.onclick = function() {
+  x++;
+  kiir.innerHTML = x;
+
+  let doboz = document.createElement("div");
+  doboz.className = "bejovo_kep";
+
+  let imgTag = document.createElement("img");
+  let kIndex = (x - 1) % kepekListaja.length;
+  imgTag.src = kepekListaja[kIndex];
+
+  if(kepekListaja[kIndex] === "tanarur1.jpg") {
+    imgTag.style.objectFit = "contain";
+  }
+  if(kepekListaja[kIndex] === "tanarur3.jpg") {
+    imgTag.style.objectFit = "contain";
+  }
+
+  let pTag = document.createElement("div");
+  pTag.className = "szovegke";
+  let sIndex = (x - 1) % szovegek.length;
+  pTag.innerHTML = szovegek[sIndex];
+
+  doboz.appendChild(imgTag);
+  doboz.appendChild(pTag);
+
+  let maxX = window.innerWidth - 220;
+  let maxY = window.innerHeight - 200;
+  if(maxX < 0) maxX = 0;
+  if(maxY < 0) maxY = 0;
+
+  doboz.style.left = Math.random() * maxX + "px";
+  doboz.style.top = Math.random() * maxY + "px";
+
+  doboz.onclick = function() {
+    doboz.remove();
+  }
+
+  document.body.appendChild(doboz);
+}
+
+torolGomb.onclick = function() {
+  let elemek = document.querySelectorAll(".bejovo_kep");
+  for(let i = 0; i < elemek.length; i++) {
+    elemek[i].remove();
+  }
+  x = 0;
+  kiir.innerHTML = 0;
+}
+</script>
+
+</body>
+</html>
